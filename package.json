@@ -1,0 +1,26 @@
+{
+  "name": "chatback",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch src -e ts,tsx --exec ts-node src/index.ts",
+    "build": "tsc --project tsconfig.json",
+    "start:prod": "cross-env NODE_ENV=production node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.2",
+    "config": "^3.2.5",
+    "cross-env": "^7.0.0",
+    "express": "^4.17.1",
+    "hal9k": "^1.0.1",
+    "halson": "^3.0.0"
+  }
+}
