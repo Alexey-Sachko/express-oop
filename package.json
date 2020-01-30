@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch src -e ts,tsx --exec ts-node src/index.ts",
+    "start": "nodemon --watch src -e ts,tsx --exec ts-node src/server.ts",
     "build": "tsc --project tsconfig.json",
-    "start:prod": "cross-env NODE_ENV=production node dist/index.js"
+    "start:prod": "cross-env NODE_ENV=production node dist/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,10 +16,15 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
+    "@types/compression": "^1.0.1",
+    "@types/cors": "^2.8.6",
     "@types/express": "^4.17.2",
+    "@types/node": "^13.5.2",
+    "compression": "^1.7.4",
     "config": "^3.2.5",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.0",
-    "express": "^4.17.1",
+    "express": "^5.0.0-alpha.7",
     "hal9k": "^1.0.1",
     "halson": "^3.0.0"
   }
