@@ -26,5 +26,5 @@ const handleServerErrors = (router: Router) => {
   }) as FullHanler);
 };
 
-export default [handleServerErrors, handleClientErrors, handle404Error];
-// export default [handle404Error, handleClientErrors, handleServerErrors];
+// export default [handleServerErrors, handleClientErrors, handle404Error];
+export default [handle404Error, handleClientErrors, handleServerErrors];
