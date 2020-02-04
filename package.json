@@ -13,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^25.1.1",
+    "@types/morgan": "^1.7.37",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2",
     "ts-jest": "^25.1.0",
@@ -35,6 +36,7 @@
     "express": "^5.0.0-alpha.7",
     "hal9k": "^1.0.1",
     "halson": "^3.0.0",
+    "morgan": "^1.9.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.5",
     "supertest": "^4.0.2",

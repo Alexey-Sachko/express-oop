@@ -2,6 +2,7 @@ import { Router } from "express";
 import cors from "cors";
 import parser from "body-parser";
 import compression from "compression";
+import morgan from "morgan";
 
 export const handleCors = (router: Router) =>
   router.use(cors({ credentials: true, origin: true }));
@@ -13,4 +14,8 @@ export const handleBodyRequestParsing = (router: Router) => {
 
 export const handleCompression = (router: Router) => {
   router.use(compression());
+};
+
+export const logger = (router: Router) => {
+  router.use(morgan("tiny"));
 };
