@@ -1,3 +1,5 @@
+import { User } from "./models/user";
+
 export const login = async () => {
   // Make a tokens by login and password
   return {};
@@ -12,5 +14,11 @@ export const refreshToken = async () => {
 };
 
 export const createUser = async () => {
-  return {};
+  const user = new User();
+  await user.save();
+  return user;
+};
+
+export const getUsers = async () => {
+  return await User.find();
 };
