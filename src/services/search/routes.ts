@@ -1,6 +1,7 @@
 import Route from "../../utils/route";
 import { getPlacesByName } from "./SearchController";
-import { checkSearchParams } from "../../middleware/checks";
+import { responseJson } from "../../utils/response";
+import { checkSearchParams } from "./checks";
 
 export default [
   new Route({
@@ -10,8 +11,7 @@ export default [
       checkSearchParams,
       async ({ query }, res) => {
         const result = await getPlacesByName(query.q);
-        res.header("Content-Type", "application/json");
-        res.status(200).send(JSON.stringify(result, null, 2));
+        responseJson(res, result);
       }
     ]
   })
