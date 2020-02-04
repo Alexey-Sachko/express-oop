@@ -14,7 +14,7 @@ export const refreshToken = async () => {
 };
 
 export const createUser = async () => {
-  const user = new User();
+  const user = new User("Alexey", "helllo@mail.com");
   await user.save();
   return user;
 };
