@@ -37,10 +37,12 @@
     "hal9k": "^1.0.1",
     "halson": "^3.0.0",
     "morgan": "^1.9.1",
+    "pg": "^7.18.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.5",
     "supertest": "^4.0.2",
-    "swagger-ui-express": "^4.1.3"
+    "swagger-ui-express": "^4.1.3",
+    "typeorm": "^0.2.22"
   },
   "jest": {
     "verbose": true,

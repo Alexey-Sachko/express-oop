@@ -1,0 +1,12 @@
+version: "3"
+services:
+  db:
+    image: postgres:12.0-alpine
+    # restart: always
+    environment:
+      POSTGRES_USER: alexey
+      POSTGRES_PASSWORD: example
+    # volumes:
+    #   - ./pg-storage:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
