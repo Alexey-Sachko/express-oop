@@ -13,6 +13,27 @@ export const checkRefreshParams = (
   next();
 };
 
+export const checkLoginBody = (() => {
+  const schema = Joi.object({
+    email: Joi.string()
+      .min(5)
+      .required(),
+
+    password: Joi.string()
+      .min(3)
+      .max(30)
+      .required()
+  });
+
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw new HTTP400Error(error);
+    }
+    next();
+  };
+})();
+
 export const checkRegisterBody = (() => {
   const schema = Joi.object({
     username: Joi.string()

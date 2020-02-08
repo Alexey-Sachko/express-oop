@@ -7,9 +7,14 @@ import {
   logout,
   refreshToken,
   deleteUser,
-  confirmEmail
+  confirmEmail,
+  getUserByEmail
 } from "./UsersController";
-import { checkRefreshParams, checkRegisterBody } from "./checks";
+import {
+  checkRefreshParams,
+  checkRegisterBody,
+  checkLoginBody
+} from "./checks";
 
 export default [
   new Route({
@@ -27,8 +32,19 @@ export default [
     path: "/api/v1/users/login",
     method: "post",
     handler: [
+      checkLoginBody,
       async ({ body }, res) => {
-        const result = await login();
+        const result = await login(body);
+        responseJson(res, result);
+      }
+    ]
+  }),
+  new Route({
+    path: "/api/v1/users/:email",
+    method: "get",
+    handler: [
+      async ({ params }, res) => {
+        const result = await getUserByEmail(params.email);
         responseJson(res, result);
       }
     ]

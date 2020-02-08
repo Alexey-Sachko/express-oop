@@ -3,18 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  BeforeInsert,
-  getRepository
+  BeforeInsert
 } from "typeorm";
 import bcrypt from "bcrypt";
 import uuid from "uuid/v1";
-
-export type UserRO = {
-  id: number;
-  email: string;
-  username: string;
-  password?: string;
-};
 
 @Entity()
 export class User extends BaseEntity {
@@ -24,7 +16,7 @@ export class User extends BaseEntity {
   @Column({ length: 50, unique: true })
   username: string;
 
-  @Column({ length: 100, nullable: true, select: false })
+  @Column({ length: 100, nullable: true })
   password: string = "";
 
   @Column({ length: 500 })
@@ -57,16 +49,16 @@ export class User extends BaseEntity {
     return await bcrypt.compare(attempt, this.password);
   }
 
-  toResponseObject(): UserRO {
-    const { id, email, username } = this;
-    const responseObject: UserRO = {
+  toResponseObject() {
+    const { id, email, username, isConfirmed, confirmUid } = this;
+    const responseObject = {
       id,
       username,
-      email
+      email,
+      isConfirmed,
+      confirmUid
     };
 
     return responseObject;
   }
 }
-
-export const getUsersRepository = () => getRepository(User);

@@ -86,6 +86,39 @@
           }
         ]
       }
+    },
+    "/users/{id}/confirm/{confirmUid}": {
+      "get": {
+        "tags": ["Регистрация пользователя"],
+        "summary": "Подтверждение email",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id пользователя",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "confirmUid",
+            "in": "path",
+            "description": "уникальный код подтверждения",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
     }
   }
 }

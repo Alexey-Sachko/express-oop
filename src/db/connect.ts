@@ -11,7 +11,7 @@ export default async function connectToDb() {
     database: "postgres",
     entities: [User],
     synchronize: true,
-    logging: true
+    logging: false
   });
   console.log("successfully connected to database");
   return connection;

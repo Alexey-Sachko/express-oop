@@ -1,15 +1,44 @@
-import { User, getUsersRepository } from "./models/user";
+import { User } from "./models/user";
 import EmialClient from "../../mail/EmialClient";
 import ConfirmEmail from "./utils/ConfirmEmail";
 import {
   HTTP404Error,
-  HTTPClientError,
-  HTTP400Error
+  HTTP400Error,
+  HTTP401Error
 } from "../../utils/httpErrors";
+import { makeAccessToken } from "./utils/jwt";
 
-export const login = async () => {
-  // Make a tokens by login and password
-  return {};
+type LoginData = {
+  email: string;
+  password: string;
+};
+
+export const getUserByEmail = async (email: string) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new HTTP404Error(`not found with email: '${email}'`);
+  }
+
+  return user.toResponseObject();
+};
+
+export const login = async ({ email, password }: LoginData) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new HTTP401Error("wrong password or email");
+  }
+
+  if (!(await user.comparePassword(password))) {
+    throw new HTTP401Error("wrong password or email");
+  }
+
+  const safeUser = user.toResponseObject();
+  const accessToken = makeAccessToken(safeUser);
+
+  // generate tokens
+  return { accessToken };
 };
 
 export const logout = async () => {
@@ -18,7 +47,7 @@ export const logout = async () => {
 };
 
 export const refreshToken = async () => {
-  // Make a new tokens by refresh_token
+  // Make new tokens by refresh_token
   return {};
 };
 
@@ -36,8 +65,7 @@ export const register = async (
 };
 
 export const confirmEmail = async (id: number, confirmUid: string) => {
-  const repository = getUsersRepository();
-  const user = await repository.findOne({ id });
+  const user = await User.findOne({ id });
 
   if (!user) {
     throw new HTTP404Error("not found user");
@@ -52,16 +80,18 @@ export const confirmEmail = async (id: number, confirmUid: string) => {
   }
 
   user.isConfirmed = true;
-  const result = await repository.save(user);
+  const result = await user.save();
 
   return result;
 };
 
 export const deleteUser = async (id: number) => {
+  // Allowed only for admins
   return await User.delete({ id });
 };
 
 export const getUsers = async () => {
   // Allowed only for admins
-  return await User.find();
+  const users = await User.find();
+  return users.map(user => user.toResponseObject());
 };
