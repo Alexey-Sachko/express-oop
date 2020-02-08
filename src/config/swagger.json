@@ -33,6 +33,59 @@
           }
         ]
       }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Список пользователей"],
+        "summary": "Вывести список всех пользователей",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "tags": ["Регистрация пользователя"],
+        "summary": "Регистрация пользователя + отправка подтверждения на email",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              },
+              "required": ["email", "password", "username"]
+            }
+          }
+        ]
+      }
     }
   }
 }

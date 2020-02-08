@@ -1,17 +1,19 @@
 import Route from "../../utils/route";
 import { responseJson } from "../../utils/response";
 import {
-  createUser,
+  register,
   getUsers,
   login,
   logout,
-  refreshToken
+  refreshToken,
+  deleteUser,
+  confirmEmail
 } from "./UsersController";
-import { checkRefreshParams } from "./checks";
+import { checkRefreshParams, checkRegisterBody } from "./checks";
 
 export default [
   new Route({
-    path: "/api/v1/user/refreshtoken",
+    path: "/api/v1/users/refreshtoken",
     method: "get",
     handler: [
       checkRefreshParams,
@@ -22,42 +24,65 @@ export default [
     ]
   }),
   new Route({
-    path: "/api/v1/user/login",
-    method: "get",
+    path: "/api/v1/users/login",
+    method: "post",
     handler: [
-      async ({ query }, res) => {
+      async ({ body }, res) => {
         const result = await login();
         responseJson(res, result);
       }
     ]
   }),
   new Route({
-    path: "/api/v1/user/logout",
+    path: "/api/v1/users/logout",
     method: "get",
     handler: [
-      async ({ query }, res) => {
+      async (req, res) => {
         const result = await logout();
         responseJson(res, result);
       }
     ]
   }),
   new Route({
-    path: "/api/v1/user/create",
-    method: "get",
+    path: "/api/v1/users/register",
+    method: "post",
     handler: [
+      checkRegisterBody,
       async (req, res) => {
-        const user = await createUser();
+        const { username, email, password } = req.body;
+        const user = await register(email, username, password);
         responseJson(res, user);
       }
     ]
   }),
   new Route({
-    path: "/api/v1/user/list",
+    path: "/api/v1/users/:id/confirm/:permId",
+    method: "get",
+    handler: [
+      async ({ params }, res) => {
+        const { id, permId } = params;
+        const result = await confirmEmail(Number(id), permId);
+        responseJson(res, result || {});
+      }
+    ]
+  }),
+  new Route({
+    path: "/api/v1/users",
     method: "get",
     handler: [
       async (req, res) => {
         const users = await getUsers();
         responseJson(res, users);
+      }
+    ]
+  }),
+  new Route({
+    path: "/api/v1/users/:id",
+    method: "delete",
+    handler: [
+      async (req, res) => {
+        const user = await deleteUser(Number(req.params.id));
+        responseJson(res, user);
       }
     ]
   })
