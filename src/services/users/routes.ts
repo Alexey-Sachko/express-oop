@@ -15,6 +15,7 @@ import {
   checkRegisterBody,
   checkLoginBody
 } from "./checks";
+import { getSessions } from "./SessionsController";
 
 export default [
   new Route({
@@ -99,6 +100,16 @@ export default [
       async (req, res) => {
         const user = await deleteUser(Number(req.params.id));
         responseJson(res, user);
+      }
+    ]
+  }),
+  new Route({
+    path: "/api/v1/sessions",
+    method: "get",
+    handler: [
+      async (req, res) => {
+        const result = await getSessions();
+        responseJson(res, result);
       }
     ]
   })

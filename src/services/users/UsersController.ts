@@ -7,6 +7,7 @@ import {
   HTTP401Error
 } from "../../utils/httpErrors";
 import { makeAccessToken } from "./utils/jwt";
+import { Session } from "./models/sessions";
 
 type LoginData = {
   email: string;
@@ -34,11 +35,15 @@ export const login = async ({ email, password }: LoginData) => {
     throw new HTTP401Error("wrong password or email");
   }
 
+  const session = new Session(user.id);
+  await session.save();
+
   const safeUser = user.toResponseObject();
   const accessToken = makeAccessToken(safeUser);
+  const refreshToken = session.refreshToken;
 
   // generate tokens
-  return { accessToken };
+  return { accessToken, refreshToken };
 };
 
 export const logout = async () => {
