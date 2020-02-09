@@ -10,21 +10,17 @@ import {
   confirmEmail,
   getUserByEmail
 } from "./UsersController";
-import {
-  checkRefreshParams,
-  checkRegisterBody,
-  checkLoginBody
-} from "./checks";
+import { checkRefreshBody, checkRegisterBody, checkLoginBody } from "./checks";
 import { getSessions } from "./SessionsController";
 
 export default [
   new Route({
     path: "/api/v1/users/refreshtoken",
-    method: "get",
+    method: "post",
     handler: [
-      checkRefreshParams,
-      async ({ query }, res) => {
-        const result = await refreshToken();
+      checkRefreshBody,
+      async ({ body }, res) => {
+        const result = await refreshToken(body.refreshToken);
         responseJson(res, result);
       }
     ]
@@ -40,6 +36,7 @@ export default [
       }
     ]
   }),
+  // Only for admins
   new Route({
     path: "/api/v1/users/:email",
     method: "get",
@@ -52,10 +49,11 @@ export default [
   }),
   new Route({
     path: "/api/v1/users/logout",
-    method: "get",
+    method: "post",
     handler: [
-      async (req, res) => {
-        const result = await logout();
+      checkRefreshBody,
+      async ({ body }, res) => {
+        const result = await logout(body.refreshToken);
         responseJson(res, result);
       }
     ]
@@ -83,6 +81,7 @@ export default [
       }
     ]
   }),
+  // Only for admins
   new Route({
     path: "/api/v1/users",
     method: "get",
@@ -93,6 +92,7 @@ export default [
       }
     ]
   }),
+  // Only for admins
   new Route({
     path: "/api/v1/users/:id",
     method: "delete",
@@ -103,6 +103,7 @@ export default [
       }
     ]
   }),
+  // Only for admins
   new Route({
     path: "/api/v1/sessions",
     method: "get",

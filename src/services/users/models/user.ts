@@ -50,13 +50,12 @@ export class User extends BaseEntity {
   }
 
   toResponseObject() {
-    const { id, email, username, isConfirmed, confirmUid } = this;
+    const { id, email, username, isConfirmed } = this;
     const responseObject = {
       id,
       username,
       email,
-      isConfirmed,
-      confirmUid
+      isConfirmed
     };
 
     return responseObject;

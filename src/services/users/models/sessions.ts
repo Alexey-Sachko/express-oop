@@ -16,10 +16,13 @@ export class Session extends BaseEntity {
 
   @ManyToOne(
     type => User,
-    user => user.id,
+    user => user,
     { onDelete: "CASCADE" }
   )
-  userId: number;
+  user: User;
+
+  @Column()
+  userId: number = 0; // This field will be generated automatically
 
   @Column()
   refreshToken: string = "";
@@ -27,9 +30,9 @@ export class Session extends BaseEntity {
   @Column()
   expiresIn: number = 0;
 
-  constructor(userId: number) {
+  constructor(user: User) {
     super();
-    this.userId = userId;
+    this.user = user;
   }
 
   @BeforeInsert()
