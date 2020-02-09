@@ -12,6 +12,7 @@ import {
 } from "./UsersController";
 import { checkRefreshBody, checkRegisterBody, checkLoginBody } from "./checks";
 import { getSessions } from "./SessionsController";
+import { checkAccessMiddleware } from "../../middleware/checkAccess";
 
 export default [
   new Route({
@@ -41,6 +42,7 @@ export default [
     path: "/api/v1/users/:email",
     method: "get",
     handler: [
+      checkAccessMiddleware,
       async ({ params }, res) => {
         const result = await getUserByEmail(params.email);
         responseJson(res, result);
@@ -86,6 +88,7 @@ export default [
     path: "/api/v1/users",
     method: "get",
     handler: [
+      checkAccessMiddleware,
       async (req, res) => {
         const users = await getUsers();
         responseJson(res, users);
@@ -97,6 +100,7 @@ export default [
     path: "/api/v1/users/:id",
     method: "delete",
     handler: [
+      checkAccessMiddleware,
       async (req, res) => {
         const user = await deleteUser(Number(req.params.id));
         responseJson(res, user);
@@ -108,6 +112,7 @@ export default [
     path: "/api/v1/sessions",
     method: "get",
     handler: [
+      checkAccessMiddleware,
       async (req, res) => {
         const result = await getSessions();
         responseJson(res, result);

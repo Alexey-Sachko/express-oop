@@ -9,11 +9,7 @@ import {
 import { makeAccessToken } from "./utils/jwt";
 import { Session } from "./models/sessions";
 import { createSession } from "./SessionsController";
-
-type LoginData = {
-  email: string;
-  password: string;
-};
+import UserContext from "./UserContext";
 
 export const getUserByEmail = async (email: string) => {
   const user = await User.findOne({ email });
@@ -23,6 +19,11 @@ export const getUserByEmail = async (email: string) => {
   }
 
   return user.toResponseObject();
+};
+
+type LoginData = {
+  email: string;
+  password: string;
 };
 
 export const login = async ({ email, password }: LoginData) => {
@@ -37,8 +38,12 @@ export const login = async ({ email, password }: LoginData) => {
   }
 
   const session = await createSession({ user });
-  const safeUser = user.toResponseObject();
-  const accessToken = makeAccessToken(safeUser);
+  const tokenUserData = new UserContext({
+    email: user.email,
+    username: user.username,
+    isAdmin: false
+  });
+  const accessToken = makeAccessToken(tokenUserData.toJSON());
   const refreshToken = session.refreshToken;
 
   return { accessToken, refreshToken };

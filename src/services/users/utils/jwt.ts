@@ -12,9 +12,9 @@ export const makeAccessToken = (user: object) => {
   return token;
 };
 
-export const verifyAccessToken = (token: string) => {
+export const verifyAccessToken = <T extends object>(token: string) => {
   try {
-    const decodedData = jwt.verify(token, secret);
+    const decodedData = jwt.verify(token, secret) as T;
     return decodedData;
   } catch (err) {
     console.error("invalid token ", err);
