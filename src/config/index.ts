@@ -10,6 +10,12 @@ const config = {
   },
   token: {
     secret: env.JWT_SECRET || "exampleSecret"
+  },
+  db: {
+    host: env.DB_HOST || "localhost",
+    port: Number(env.DB_PORT) || 5432,
+    username: env.DB_USER || "alexey",
+    password: env.DB_PASSWORD || "example"
   }
 };
 

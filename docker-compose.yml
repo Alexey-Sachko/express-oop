@@ -10,3 +10,23 @@ services:
     #   - ./pg-storage:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  api:
+    build: ./
+    restart: always
+    image: 23091996/express-chat
+    environment:
+      OPEN_CAGE_DATA_KEY: 8c0892514e884f09af7c09a9b067b02b
+      OWN_EMAIL: resnicyekb@yandex.ru
+      OWN_EMAIL_PASSWORD: ksushaSokol1998
+      JWT_SECRET: sadlakjf24rf0we9fj4pf0jiwdo
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: alexey
+      DB_PASSWORD: example
+    ports:
+      - "3000:3000"
+    links:
+      - db
+    depends_on:
+      - db
