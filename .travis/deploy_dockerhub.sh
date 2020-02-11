@@ -6,4 +6,4 @@ else
     TAG="$TRAVIS_BRANCH"
 fi
 docker build -f Dockerfile -t 23091996/express-chat .
-docker push $TRAVIS_REPO_SLUG
+docker push 23091996/express-chat
