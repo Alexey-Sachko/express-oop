@@ -5,3 +5,6 @@ services:
 
 script:
   - sh .travis/deploy_dockerhub.sh
+
+after_success:
+  - test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_heroku.sh

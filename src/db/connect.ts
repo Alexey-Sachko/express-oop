@@ -3,7 +3,7 @@ import { User } from "../services/users/models/user";
 import { Session } from "../services/users/models/sessions";
 import config from "../config";
 
-const { username, port, password, host } = config.db;
+const { username, port, password, host, name } = config.db;
 
 export default async function connectToDb() {
   const connection = await createConnection({
@@ -12,7 +12,7 @@ export default async function connectToDb() {
     port,
     username,
     password,
-    database: "postgres",
+    database: name,
     entities: [User, Session],
     synchronize: true,
     logging: false
