@@ -12,7 +12,7 @@ const config = {
     secret: env.JWT_SECRET || "exampleSecret"
   },
   db: {
-    name: "postgres",
+    name: env.DB_NAME || "postgres",
     host: env.DB_HOST || "localhost",
     port: Number(env.DB_PORT) || 5432,
     username: env.DB_USER || "alexey",
