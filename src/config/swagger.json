@@ -36,7 +36,7 @@
     },
     "/users": {
       "get": {
-        "tags": ["Список пользователей"],
+        "tags": ["Операции с пользователями"],
         "summary": "Вывести список всех пользователей",
         "responses": {
           "200": {
@@ -53,7 +53,7 @@
     },
     "/users/register": {
       "post": {
-        "tags": ["Регистрация пользователя"],
+        "tags": ["Операции с пользователями"],
         "summary": "Регистрация пользователя + отправка подтверждения на email",
         "responses": {
           "200": {
@@ -89,7 +89,7 @@
     },
     "/users/{id}/confirm/{confirmUid}": {
       "get": {
-        "tags": ["Регистрация пользователя"],
+        "tags": ["Операции с пользователями"],
         "summary": "Подтверждение email",
         "responses": {
           "200": {
@@ -116,6 +116,99 @@
             "description": "уникальный код подтверждения",
             "required": true,
             "type": "string"
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Операции с пользователями"],
+        "summary": "Вход (login)",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              },
+              "required": ["email", "password"]
+            }
+          }
+        ]
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": ["Операции с пользователями"],
+        "summary": "Выход (logout)",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "properties": {
+                "refreshToken": {
+                  "type": "string"
+                }
+              },
+              "required": ["refreshToken"]
+            }
+          }
+        ]
+      }
+    },
+    "/users/refreshtoken": {
+      "post": {
+        "tags": ["Операции с пользователями"],
+        "summary": "Обновить пару токенов",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "content": {
+          "application/json": {}
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "schema": {
+              "properties": {
+                "refreshToken": {
+                  "type": "string"
+                }
+              },
+              "required": ["refreshToken"]
+            }
           }
         ]
       }
