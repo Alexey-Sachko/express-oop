@@ -83,6 +83,20 @@ export default [
       }
     ]
   }),
+
+  new Route({
+    path: "/api/v1/profile",
+    method: "get",
+    handler: [
+      checkAccessMiddleware,
+      async (req, res) => {
+        const email = req.context.user?.email || "";
+        const user = await getUserByEmail(email);
+        responseJson(res, user);
+      }
+    ]
+  }),
+
   // Only for admins
   new Route({
     path: "/api/v1/users",
