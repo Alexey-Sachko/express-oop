@@ -28,6 +28,9 @@ export class User extends BaseEntity {
   @Column({ type: "boolean", default: false })
   isConfirmed: boolean = false;
 
+  @Column({ type: "simple-json", default: {}, nullable: false })
+  contacts: { [key: string]: boolean } = {};
+
   constructor(username: string, email: string, password: string) {
     super();
     this.username = username;
@@ -50,12 +53,13 @@ export class User extends BaseEntity {
   }
 
   toResponseObject() {
-    const { id, email, username, isConfirmed } = this;
+    const { id, email, username, isConfirmed, contacts } = this;
     const responseObject = {
       id,
       username,
       email,
-      isConfirmed
+      isConfirmed,
+      contacts
     };
 
     return responseObject;

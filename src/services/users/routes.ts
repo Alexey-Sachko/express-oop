@@ -8,9 +8,15 @@ import {
   refreshToken,
   deleteUser,
   confirmEmail,
-  getUserByEmail
+  getUserByEmail,
+  addContact
 } from "./UsersController";
-import { checkRefreshBody, checkRegisterBody, checkLoginBody } from "./checks";
+import {
+  checkRefreshBody,
+  checkRegisterBody,
+  checkLoginBody,
+  checkAddContactBody
+} from "./checks";
 import { getSessions } from "./SessionsController";
 import { checkAccessMiddleware } from "../../middleware/checkAccess";
 
@@ -45,7 +51,7 @@ export default [
       checkAccessMiddleware,
       async ({ params }, res) => {
         const result = await getUserByEmail(params.email);
-        responseJson(res, result);
+        responseJson(res, result.toResponseObject());
       }
     ]
   }),
@@ -92,7 +98,21 @@ export default [
       async (req, res) => {
         const email = req.context.user?.email || "";
         const user = await getUserByEmail(email);
-        responseJson(res, user);
+        responseJson(res, user.toResponseObject());
+      }
+    ]
+  }),
+
+  new Route({
+    path: "/api/v1/contacts",
+    method: "post",
+    handler: [
+      checkAccessMiddleware,
+      checkAddContactBody,
+      async ({ body, context }, res) => {
+        const email = context.user?.email || "";
+        const result = await addContact(email, body.contactId);
+        responseJson(res, result);
       }
     ]
   }),

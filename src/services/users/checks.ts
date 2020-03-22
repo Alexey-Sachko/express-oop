@@ -59,3 +59,17 @@ export const checkRegisterBody = (() => {
     next();
   };
 })();
+
+export const checkAddContactBody = (() => {
+  const schema = Joi.object({
+    contactId: Joi.number().required()
+  });
+
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw new HTTP400Error(error);
+    }
+    next();
+  };
+})();

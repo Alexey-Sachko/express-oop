@@ -15,7 +15,17 @@ export const getUserByEmail = async (email: string) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw new HTTP404Error(`not found with email: '${email}'`);
+    throw new HTTP404Error(`not found user with email: '${email}'`);
+  }
+
+  return user;
+};
+
+export const getUserBiID = async (id: number) => {
+  const user = await User.findOne({ id });
+
+  if (!user) {
+    throw new HTTP404Error(`not found user with id: '${id}'`);
   }
 
   return user.toResponseObject();
@@ -126,5 +136,29 @@ export const deleteUser = async (id: number) => {
 export const getUsers = async () => {
   // Allowed only for admins
   const users = await User.find();
-  return users.map(user => user.toResponseObject());
+  return users.map(user => user);
+};
+
+export const addContact = async (userEmail: string, contactId: number) => {
+  const user = await getUserByEmail(userEmail);
+  await getUserBiID(contactId);
+
+  if (!user.contacts) {
+    user.contacts = {};
+  }
+
+  user.contacts[contactId] = true;
+
+  await user.save();
+
+  const arrayOfIds = Object.entries(user.contacts)
+    .filter(([key, value]) => Boolean(value))
+    .map(([key]) => key);
+
+  const contacts = await User.findByIds(arrayOfIds);
+
+  return {
+    ...user,
+    contacts
+  };
 };
